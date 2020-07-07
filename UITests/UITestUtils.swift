@@ -40,7 +40,11 @@ public struct UITestUtils {
         uiElementPassword.tap()
         sleep(1)
         uiElementPassword.typeText(password)
-        webViewsQuery.buttons["Sign In"].tap()
+        if webViewsQuery.buttons["Sign In"].exists {
+            webViewsQuery.buttons["Sign In"].tap()
+        } else if webViewsQuery.buttons["Verify"].exists {
+            webViewsQuery.buttons["Verify"].tap()
+        }
     }
 
     func getTextViewValue(label: String) -> String? {
