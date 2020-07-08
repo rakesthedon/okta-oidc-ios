@@ -32,18 +32,38 @@ public struct UITestUtils {
         XCTAssertTrue(uiElementUsername.waitForExistence(timeout: 60))
         uiElementUsername.tap()
         uiElementUsername.typeText(username)
-        let uiElementPassword: XCUIElement = webViewsQuery.secureTextFields.element(boundBy: 0)
         if webViewsQuery.buttons["Next"].exists {
             webViewsQuery.buttons["Next"].tap()
-            XCTAssertTrue(uiElementPassword.waitForExistence(timeout: 60))
         }
-        uiElementPassword.tap()
-        sleep(1)
-        uiElementPassword.typeText(password)
+        enterPassword(password, in: webViewsQuery)
+        testApp.tap()
         if webViewsQuery.buttons["Sign In"].exists {
             webViewsQuery.buttons["Sign In"].tap()
         } else if webViewsQuery.buttons["Verify"].exists {
             webViewsQuery.buttons["Verify"].tap()
+        }
+    }
+
+    func enterPassword(_ password: String, in element: XCUIElementQuery) {
+        var passwordTextField: XCUIElement?
+        if element.secureTextFields.count > 1 {
+            var currentTextFieldWidth: CGFloat = 0.0
+            for i in 0...(element.secureTextFields.count-1) {
+                let textField = element.secureTextFields.element(boundBy: i)
+                if textField.frame.width > currentTextFieldWidth {
+                    passwordTextField = textField
+                    currentTextFieldWidth = textField.frame.width
+                }
+            }
+        } else {
+            passwordTextField = element.secureTextFields.element(boundBy: 0)
+        }
+
+        if let passwordTextField = passwordTextField {
+            XCTAssertTrue(passwordTextField.waitForExistence(timeout: 60))
+            passwordTextField.tap()
+            sleep(1)
+            passwordTextField.typeText(password)
         }
     }
 
