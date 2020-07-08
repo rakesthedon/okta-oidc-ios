@@ -29,7 +29,7 @@ public struct UITestUtils {
         // Sign In via username and password inside of the Safari WebView
         let webViewsQuery = testApp.webViews
         let uiElementUsername = webViewsQuery.textFields.element(boundBy: 0)
-        XCTAssertTrue(uiElementUsername.waitForExistence(timeout: 60))
+        XCTAssertTrue(uiElementUsername.waitForExistence(timeout: 20))
         uiElementUsername.tap()
         uiElementUsername.typeText(username)
         if webViewsQuery.buttons["Next"].exists {
@@ -42,6 +42,10 @@ public struct UITestUtils {
         } else if webViewsQuery.buttons["Verify"].exists {
             webViewsQuery.buttons["Verify"].tap()
         }
+
+        XCTAssertTrue(webViewsQuery.buttons["Verify"].waitForExistence(timeout: 20))
+        enterPassword("okta", in: webViewsQuery)
+        webViewsQuery.buttons["Verify"].tap()
     }
 
     func enterPassword(_ password: String, in element: XCUIElementQuery) {
