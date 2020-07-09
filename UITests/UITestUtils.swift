@@ -36,7 +36,6 @@ public struct UITestUtils {
             webViewsQuery.buttons["Next"].tap()
         }
         enterPassword(password, in: webViewsQuery)
-        testApp.tap()
         if webViewsQuery.buttons["Sign In"].exists {
             webViewsQuery.buttons["Sign In"].tap()
         } else if webViewsQuery.buttons["Verify"].exists {
